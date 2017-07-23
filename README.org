@@ -1,5 +1,5 @@
-#+TITLE: Mai Emacs Configuration
-#+AUTHOR: Daniel Mai
+#+TITLE: Isaac Emacs Configuration
+#+AUTHOR: Isaac Zhou
 
 Here's my Emacs setup that I use on the daily.
 
