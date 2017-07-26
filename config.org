@@ -31,7 +31,10 @@ brew install emacs --with-cocoa --with-imagemagick --with-gnutls
 
 #+begin_src emacs-lisp
 (setq user-full-name "Isaac Zhou"
-      user-mail-address "isaaczhou85@gmail.com")
+      user-mail-address "isaaczhou85@gmail.com"
+      calendar-latitude 40.7
+      calendar-longitude 74.0
+      calendar-location-name "New York, NY")
 #+end_src
 
 * Customize settings

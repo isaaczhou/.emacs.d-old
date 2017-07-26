@@ -1,5 +1,8 @@
 (setq user-full-name "Isaac Zhou"
-      user-mail-address "isaaczhou85@gmail.com")
+      user-mail-address "isaaczhou85@gmail.com"
+      calendar-latitude 40.7
+      calendar-longitude 74.0
+      calendar-location-name "New York, NY")
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file)
