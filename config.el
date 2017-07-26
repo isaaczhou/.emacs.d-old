@@ -230,9 +230,15 @@
 
 (setq org-tags-column 45)
 
+(require 'org-install)
+(require 'ob-ipython)
+(setq org-babel-python-command "/home/isaac/anaconda3/bin/python3")
+(setq py-python-command "/home/isaac/anaconda3/bin/python3")
+
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((python . t)
+   (ipython . t)
    (C . t)
    (calc . t)
    (latex . t)
@@ -247,11 +253,15 @@
 (defun my-org-confirm-babel-evaluate (lang body)
   "Do not confirm evaluation for these languages."
   (not (or (string= lang "C")
+           (string= lang "ipython")
            (string= lang "java")
            (string= lang "python")
            (string= lang "emacs-lisp")
            (string= lang "sqlite"))))
 (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
+
+;;; display/update images in the buffer after I evaluate
+(add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
 
 (setq org-src-fontify-natively t
       org-src-window-setup 'current-window
@@ -636,8 +646,6 @@
 
 (require 'package)
 (package-initialize)
-(add-to-list 'package-archives
-	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
 (defvar local-packages '(projectile auto-complete epc jedi))
 
@@ -826,4 +834,6 @@ May be necessary for some GUI environments (e.g., Mac OS X)")
 ;; End of Python IDE set up
 
 (electric-pair-mode 1)
-(global-visual-line-mode 1)
+
+(require 'yasnippet)
+(yas-global-mode 1)

@@ -1,1 +1,1 @@
-("~/.emacs.d/" "~/Dropbox/isaaczhou/isaaczhou/" "~/Dropbox/OrgEmacs/" "~/Dropbox/isaaczhou/PrimerPy/" "~/Dropbox/isaaczhou/pelican-chameleon/" "~/Dropbox/Algorithm/")
+("~/.emacs.d/" "~/Dropbox/OrgEmacs/" "~/Dropbox/isaaczhou/isaaczhou/" "~/Dropbox/isaaczhou/PrimerPy/" "~/Dropbox/isaaczhou/pelican-chameleon/" "~/Dropbox/Algorithm/")
