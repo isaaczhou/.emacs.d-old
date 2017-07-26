@@ -1558,4 +1558,8 @@ May be necessary for some GUI environments (e.g., Mac OS X)")
     ))
 ;; End of Python IDE set up
 #+end_src
-
+* General Setup
+  #+begin_src emacs-lisp
+(electric-pair-mode 1)
+(global-visual-line-mode 1)
+  #+end_src

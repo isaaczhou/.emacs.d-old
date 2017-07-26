@@ -824,3 +824,6 @@ May be necessary for some GUI environments (e.g., Mac OS X)")
 
     ))
 ;; End of Python IDE set up
+
+(electric-pair-mode 1)
+(global-visual-line-mode 1)
