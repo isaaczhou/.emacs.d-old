@@ -1,4 +1,3 @@
-
 (setq user-full-name "Isaac Zhou"
       user-mail-address "isaaczhou85@gmail.com"
       calendar-latitude 40.7
@@ -655,7 +654,7 @@
 
 (defun uninstalled-packages (packages)
   (delq nil
-        (mapcar (lambda (p) (if (package-installed-p p nil) nil p)) packages)))
+	(mapcar (lambda (p) (if (package-installed-p p nil) nil p)) packages)))
 
 ;; This delightful bit adapted from:
 ;; http://batsov.com/articles/2012/02/19/package-management-in-emacs-the-good-the-bad-and-the-ugly/
@@ -665,7 +664,7 @@
     (progn
       (package-refresh-contents)
       (dolist (p need-to-install)
-        (package-install p)))))
+	(package-install p)))))
 
 ;; Global Jedi config vars
 
@@ -728,10 +727,10 @@ May be necessary for some GUI environments (e.g., Mac OS X)")
       "Just uses the vc-find-root function to figure out the project root.
        Won't always work for some directory layouts."
       (let* ((buf-dir (expand-file-name (file-name-directory (buffer-file-name buf))))
-             (project-root (vc-find-root buf-dir repo-file)))
-        (if project-root
-            (expand-file-name project-root)
-          nil)))
+	     (project-root (vc-find-root buf-dir repo-file)))
+	(if project-root
+	    (expand-file-name project-root)
+	  nil)))
 
     ;; Method 2: slightly more robust
     (defun get-project-root-with-file (buf repo-file &optional init-file)
@@ -841,3 +840,13 @@ May be necessary for some GUI environments (e.g., Mac OS X)")
 
 (require 'yasnippet)
 (yas-global-mode 1)
+
+(add-hook 'js2-mode-hook 'ac-js2-mode)
+
+(ac-config-default)
+(global-auto-complete-mode t)
+(setq ac-auto-show-menu    0.2)
+(setq ac-delay             0.2)
+(setq ac-menu-height       20)
+(setq ac-auto-start t)
+(setq ac-show-menu-immediately-on-auto-complete t)

@@ -1578,8 +1578,6 @@ I want to load snippets in orgmode
 #+begin_src emacs-lisp
 (require 'yasnippet)
 (yas-global-mode 1)
-#+end_#+begin_src language
-
 #+end_src
 
 * Javascript
