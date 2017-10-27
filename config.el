@@ -842,6 +842,7 @@ May be necessary for some GUI environments (e.g., Mac OS X)")
 (yas-global-mode 1)
 
 (add-hook 'js2-mode-hook 'ac-js2-mode)
+(setq ac-js2-evaluate-calls t)
 
 (ac-config-default)
 (global-auto-complete-mode t)

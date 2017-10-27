@@ -1583,6 +1583,7 @@ I want to load snippets in orgmode
 * Javascript
 #+begin_src emacs-lisp
 (add-hook 'js2-mode-hook 'ac-js2-mode)
+(setq ac-js2-evaluate-calls t)
 #+end_src
 
 * Autocomplete
