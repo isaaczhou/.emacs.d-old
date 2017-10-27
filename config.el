@@ -386,7 +386,7 @@
 (use-package magit
   :ensure t
   :defer t
-  :bind ("C-c g" . magit-status)
+  :bind ("C-x g" . magit-status)
   :config
   (define-key magit-status-mode-map (kbd "q") 'magit-quit-session))
 
