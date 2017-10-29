@@ -847,6 +847,7 @@ it.
   :config (setq flycheck-html-tidy-executable "tidy5"))
 #+end_src
 
+
 *** Linter setups
 
 Install the HTML5/CSS/JavaScript linters.
@@ -1316,13 +1317,6 @@ Luckily, I can modify the way Emacs formats code with this configuration.
 (add-hook 'java-mode-hook 'my-c-mode-hook)
 #+end_src
 
-** Jasmin
-Mode for editing Jasmin Java bytecode assembler files.
-
-#+BEGIN_SRC emacs-lisp
-(use-package jasmin)
-#+END_SRC
-
 ** Rust
 
 #+BEGIN_SRC emacs-lisp
@@ -1585,7 +1579,6 @@ I want to load snippets in orgmode
 (add-hook 'js2-mode-hook 'ac-js2-mode)
 (setq ac-js2-evaluate-calls t)
 #+end_src
-
 * Autocomplete
 #+begin_src emacs-lisp
 (ac-config-default)

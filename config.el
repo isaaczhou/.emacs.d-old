@@ -623,8 +623,6 @@
 (add-hook 'c-mode-hook 'my-c-mode-hook)
 (add-hook 'java-mode-hook 'my-c-mode-hook)
 
-(use-package jasmin)
-
 (use-package rust-mode
   :ensure t
   :defer t)
