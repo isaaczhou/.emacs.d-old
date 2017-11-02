@@ -849,3 +849,77 @@ May be necessary for some GUI environments (e.g., Mac OS X)")
 (setq ac-menu-height       20)
 (setq ac-auto-start t)
 (setq ac-show-menu-immediately-on-auto-complete t)
+
+(use-package ox-pandoc
+  :after ox
+  :if (executable-find "pandoc")
+  :config
+  ;; default options for all output formats
+  (setq org-pandoc-options '((standalone . t)
+                             (latex-engine . xelatex)
+                             (mathjax . t)
+                             (parse-raw . t)))
+  ;; cancel above settings only for 'docx' format
+  (setq org-pandoc-options-for-docx '((standalone . nil))))
+
+(defun isaac/org-hugo-export ()
+  "Export current subheading to markdown using pandoc."
+  (interactive)
+  ;; Save cursor position
+  (save-excursion
+    ;; Go to top level heading for subtree
+    (unless (eq (org-current-level) 1)
+      (org-up-heading-all 10))
+    ;; Set export format, pandoc options, post properties
+    (let* ((org-pandoc-format 'markdown)
+           (org-pandoc-options-for-markdown '((standalone . t)
+                                              (atx-headers . t)
+                                              (columns . 79)))
+           (hl (org-element-at-point))
+           (filename (org-element-property :EXPORT_FILE_NAME hl))
+           (title (format "\"%s\"" (org-element-property :title hl)))
+           (slug (format "\"%s\"" (org-element-property :SLUG hl)))
+           (date (format "\"%s\"" (org-element-property :DATE hl)))
+           (tags (org-get-tags-at))
+           (categories
+            (format "[\"%s\"]" (mapconcat 'identity tags "\",\""))))
+      (if (string= (org-get-todo-state) "DRAFT")
+          (message "Draft not exported")
+        (progn
+          ;; Make the export
+          (org-export-to-file
+              'pandoc
+              (org-export-output-file-name
+               (concat (make-temp-name ".tmp") ".org") t)
+            nil t nil nil nil
+            (lambda (f)
+              (org-pandoc-run-to-buffer-or-file f 'markdown t nil)))
+          ;; Use advice-add to add advice to existing process sentinel
+          ;; to modify file /after/ the export process has finished.
+          (advice-add
+           #'org-pandoc-sentinel
+           :after
+           `(lambda (process event)
+              (with-temp-file ,filename
+                (insert-file-contents ,filename)
+                (goto-char (point-min))
+                ;; Remove default header
+                (re-search-forward "---\\(.\\|\n\\)+?---\n\n")
+                (replace-match "")
+                (goto-char (point-min))
+                ;; Insert new properties
+                (insert
+                 (format
+                  "---\ntitle: %s\nslug: %s\ndate: %s\ncategories: %s\n---\n\n"
+                  ,title ,slug ,date ,categories))
+                ;; Demote headings and tweak code blocks
+                (dolist (reps '(("^#" . "##")
+                                ("``` {\\.\\(.+?\\)}" . "```\\1")))
+                  (goto-char (point-min))
+                  (while (re-search-forward (car reps) nil t)
+                    (replace-match (cdr reps))))))
+           '((name . "hugo-advice")))
+          ;; We don't want our advice to stick around afterwards
+          (advice-remove #'org-pandoc-sentinel 'hugo-advice)
+          (when (string= (org-get-todo-state) "↑")
+            (org-todo)))))))
