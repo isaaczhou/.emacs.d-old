@@ -27,6 +27,15 @@ Here's what the parameter means.
 brew install emacs --with-cocoa --with-imagemagick --with-gnutls
 #+end_src
 
+* Quickly Visiting Emacs Config
+#+begin_src emacs-lisp
+(defun iz/visit-emacs-config ()
+  (interactive)
+  (find-file "~/.emacs.d/config.org"))
+
+(global-set-key (kbd "C-x e") 'iz/visit-emacs-config)
+#+end_src
+
 * Personal Information
 
 #+begin_src emacs-lisp

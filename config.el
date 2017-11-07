@@ -1,3 +1,9 @@
+(defun iz/visit-emacs-config ()
+  (interactive)
+  (find-file "~/.emacs.d/config.org"))
+
+(global-set-key (kbd "C-x e") 'iz/visit-emacs-config)
+
 (setq user-full-name "Isaac Zhou"
       user-mail-address "isaaczhou85@gmail.com"
       calendar-latitude 40.7
@@ -265,6 +271,16 @@
 
 ;;; display/update images in the buffer after I evaluate
 (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
+
+(with-eval-after-load 'python
+  (defun python-shell-completion-native-try ()
+    "Return non-nil if can trigger native completion."
+    (let ((python-shell-completion-native-enable t)
+          (python-shell-completion-native-output-timeout
+           python-shell-completion-native-try-output-timeout))
+      (python-shell-completion-native-get-completions
+       (get-buffer-process (current-buffer))
+       nil "_"))))
 
 (setq org-src-fontify-natively t
       org-src-window-setup 'current-window
