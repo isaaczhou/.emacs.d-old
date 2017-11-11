@@ -27,13 +27,33 @@ Here's what the parameter means.
 brew install emacs --with-cocoa --with-imagemagick --with-gnutls
 #+end_src
 
-* Quickly Visiting Emacs Config
-#+begin_src emacs-lisp
+* Quickly Visiting Key Files
+
+** config file
+ #+begin_src emacs-lisp
 (defun iz/visit-emacs-config ()
   (interactive)
   (find-file "~/.emacs.d/config.org"))
 
 (global-set-key (kbd "C-x e") 'iz/visit-emacs-config)
+ #+end_src
+
+** blog folder
+#+begin_src emacs-lisp
+(defun iz/visit-blog-config ()
+  (interactive)
+  (find-file "~/Dropbox/BlogHugo"))
+
+(global-set-key (kbd "C-x q") 'iz/visit-blog-config)
+#+end_src
+
+** worklog
+#+begin_src emacs-lisp
+(defun iz/visit-worklog-config ()
+  (interactive)
+  (find-file "~/Dropbox/worklogs/2017WorkLog.org"))
+
+(global-set-key (kbd "C-x w") 'iz/visit-worklog-config)
 #+end_src
 
 * Personal Information
@@ -1691,3 +1711,8 @@ I want to load snippets in orgmode
           (when (string= (org-get-todo-state) "↑")
             (org-todo)))))))
 #+end_src
+** Ox-Hugo
+#+begin_src emacs-lisp
+(require 'ox-hugo)
+#+end_src
+

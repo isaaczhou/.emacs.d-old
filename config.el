@@ -4,6 +4,18 @@
 
 (global-set-key (kbd "C-x e") 'iz/visit-emacs-config)
 
+(defun iz/visit-blog-config ()
+  (interactive)
+  (find-file "~/Dropbox/BlogHugo"))
+
+(global-set-key (kbd "C-x q") 'iz/visit-blog-config)
+
+(defun iz/visit-worklog-config ()
+  (interactive)
+  (find-file "~/Dropbox/worklogs/2017WorkLog.org"))
+
+(global-set-key (kbd "C-x w") 'iz/visit-worklog-config)
+
 (setq user-full-name "Isaac Zhou"
       user-mail-address "isaaczhou85@gmail.com"
       calendar-latitude 40.7
@@ -939,3 +951,5 @@ May be necessary for some GUI environments (e.g., Mac OS X)")
           (advice-remove #'org-pandoc-sentinel 'hugo-advice)
           (when (string= (org-get-todo-state) "↑")
             (org-todo)))))))
+
+(require 'ox-hugo)
