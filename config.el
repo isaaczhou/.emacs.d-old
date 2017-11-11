@@ -388,28 +388,34 @@
   :bind (("s-D"     . dash-at-point)
          ("C-c e"   . dash-at-point-with-docset)))
 
-(use-package helm
-  :ensure t
-  :diminish helm-mode
-  :init (progn
-          (require 'helm-config)
-          (use-package helm-projectile
-            :ensure t
-            :commands helm-projectile
-            :bind ("C-c p h" . helm-projectile))
-          (use-package helm-ag :defer 10  :ensure t)
-          (setq helm-locate-command "mdfind -interpret -name %s %s"
-                helm-ff-newfile-prompt-p nil
-                helm-M-x-fuzzy-match t)
-          (helm-mode)
-          (use-package helm-swoop
-            :ensure t
-            :bind ("H-w" . helm-swoop)))
-  :bind (("C-c h" . helm-command-prefix)
-         ("C-x b" . helm-mini)
-         ("C-`" . helm-resume)
-         ("M-x" . helm-M-x)
-         ("C-x C-f" . helm-find-files)))
+(require 'helm-config)
+(setq helm-mode t)
+(setq helm-projectile t)
+(setq helm-swoop t)
+;; (use-package helm
+;;   :ensure t
+;;   :diminish helm-mode
+;;   :init (progn
+;;           (require 'helm-config)
+;;           (use-package helm-projectile
+;;             :ensure t
+;;             :commands helm-projectile
+;;             :bind ("C-c p h" . helm-projectile))
+;;           (use-package helm-ag :defer 10 :ensure t)
+;;           (setq helm-locate-command "mdfind -interpret -name %s %s"
+;;                 ;; helm-ff-newfile-prompt-p nil
+;;                 helm-M-x-fuzzy-match t)
+;;           (helm-mode)
+;;           (use-package helm-swoop
+;;             :ensure t
+;;             :bind ("H-w" . helm-swoop))
+;;           )
+;;   :bind (("C-c h" . helm-command-prefix)
+;;          ("C-x b" . helm-mini)
+;;          ("C-`" . helm-resume)
+;;          ("M-x" . helm-M-x)
+;;          ("C-x C-f" . helm-find-files))
+;;   )
 
 (use-package magit
   :ensure t

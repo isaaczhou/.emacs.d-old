@@ -759,6 +759,10 @@ tools I use).
 ** Helm
 
 #+begin_src emacs-lisp
+;; (require 'helm-config)
+;; (setq helm-mode t)
+;; (setq helm-projectile t)
+;; (setq helm-swoop t)
 (use-package helm
   :ensure t
   :diminish helm-mode
@@ -768,19 +772,24 @@ tools I use).
             :ensure t
             :commands helm-projectile
             :bind ("C-c p h" . helm-projectile))
-          (use-package helm-ag :defer 10  :ensure t)
+          (use-package helm-ag :defer 10 :ensure t)
           (setq helm-locate-command "mdfind -interpret -name %s %s"
-                helm-ff-newfile-prompt-p nil
+                ;; helm-ff-newfile-prompt-p nil
                 helm-M-x-fuzzy-match t)
           (helm-mode)
           (use-package helm-swoop
             :ensure t
-            :bind ("H-w" . helm-swoop)))
+            :bind ("H-w" . helm-swoop))
+          )
   :bind (("C-c h" . helm-command-prefix)
          ("C-x b" . helm-mini)
          ("C-`" . helm-resume)
          ("M-x" . helm-M-x)
-         ("C-x C-f" . helm-find-files)))
+         ("C-x C-f" . helm-find-files)
+         ("C-c f" . copy-file)
+         ("C-c n" . rename-file)
+         )
+  )
 #+end_src
 
 ** Magit
@@ -1715,4 +1724,3 @@ I want to load snippets in orgmode
 #+begin_src emacs-lisp
 (require 'ox-hugo)
 #+end_src
-
