@@ -21,6 +21,7 @@
         kill-visual-line
         mark-whole-buffer
         markdown-insert-bold
+        markdown-outdent-or-delete
         mc/mark-next-line-like-this
         org-beginning-of-line
         org-ctrl-c-ctrl-c

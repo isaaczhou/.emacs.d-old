@@ -1634,12 +1634,13 @@ I want to load snippets in orgmode
 #+begin_src emacs-lisp
 (ac-config-default)
 (global-auto-complete-mode t)
-(setq ac-auto-show-menu    0.2)
-(setq ac-delay             0.2)
+(setq ac-auto-show-menu    0.1)
+(setq ac-delay             0.1)
 (setq ac-menu-height       20)
 (setq ac-auto-start t)
 (setq ac-show-menu-immediately-on-auto-complete t)
 #+end_src
+
 * Blogging
 ** Ox-Pandoc Setup
 #+begin_src emacs-lisp
