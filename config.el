@@ -373,16 +373,16 @@
   :ensure t
   :bind ("H-t" . transpose-frame))
 
-(use-package ido
-  :init
-  (setq ido-enable-flex-matching t)
-  (setq ido-everywhere t)
-  (ido-mode t)
-  (use-package ido-vertical-mode
-    :ensure t
-    :defer t
-    :init (ido-vertical-mode 1)
-    (setq ido-vertical-define-keys 'C-n-and-C-p-only)))
+;; (use-package ido
+;;   :init
+;;   (setq ido-enable-flex-matching t)
+;;   (setq ido-everywhere t)
+;;   (ido-mode t)
+;;   (use-package ido-vertical-mode
+;;     :ensure t
+;;     :defer t
+;;     :init (ido-vertical-mode 1)
+;;     (setq ido-vertical-define-keys 'C-n-and-C-p-only)))
 
 (use-package whitespace
   :bind ("s-<f10>" . whitespace-mode))
