@@ -16,6 +16,12 @@
 
 (global-set-key (kbd "C-x w") 'iz/visit-worklog-config)
 
+(defun iz/visit-dropbox ()
+  (interactive)
+  (find-file "~/Dropbox"))
+
+(global-set-key (kbd "C-x r") 'iz/visit-dropbox)
+
 (setq user-full-name "Isaac Zhou"
       user-mail-address "isaaczhou85@gmail.com"
       calendar-latitude 40.7
@@ -25,16 +31,20 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file)
 
-(use-package cyberpunk-theme
-  :if (window-system)
-  :ensure t
-  :init
-  (progn
-    (load-theme 'cyberpunk t)
-    (set-face-attribute `mode-line nil
-                        :box nil)
-    (set-face-attribute `mode-line-inactive nil
-                        :box nil)))
+(use-package leuven-theme)
+(require 'powerline)
+(powerline-default-theme)
+
+;; (use-package cyberpunk-theme
+;;   :if (window-system)
+;;   :ensure t
+;;   :init
+;;   (progn
+;;     (load-theme 'cyberpunk t)
+;;     (set-face-attribute `mode-line nil
+;;                         :box nil)
+;;     (set-face-attribute `mode-line-inactive nil
+;;                         :box nil)))
 
 (use-package solarized-theme
   :defer 10
@@ -62,14 +72,37 @@
 (bind-key "<f9>" 'switch-theme)
 (bind-key "<f8>" 'disable-active-themes)
 
-(add-to-list 'default-frame-alist
-             '(font . "Source Code Pro-18"))
-
-(let ((font (if (= emacs-major-version 25)
-                "Symbola"
-              (cond ((string-equal system-type "darwin")    "Apple Color Emoji")
-                    ((string-equal system-type "gnu/linux") "Symbola")))))
-  (set-fontset-font t 'unicode font nil 'prepend))
+(when (window-system)
+  (set-default-font "Fira Code 18"))
+(let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
+               (35 . ".\\(?:###\\|##\\|_(\\|[#(?[_{]\\)")
+               (36 . ".\\(?:>\\)")
+               (37 . ".\\(?:\\(?:%%\\)\\|%\\)")
+               (38 . ".\\(?:\\(?:&&\\)\\|&\\)")
+               (42 . ".\\(?:\\(?:\\*\\*/\\)\\|\\(?:\\*[*/]\\)\\|[*/>]\\)")
+               (43 . ".\\(?:\\(?:\\+\\+\\)\\|[+>]\\)")
+               (45 . ".\\(?:\\(?:-[>-]\\|<<\\|>>\\)\\|[<>}~-]\\)")
+               (46 . ".\\(?:\\(?:\\.[.<]\\)\\|[.=-]\\)")
+               (47 . ".\\(?:\\(?:\\*\\*\\|//\\|==\\)\\|[*/=>]\\)")
+               (48 . ".\\(?:x[a-zA-Z]\\)")
+               (58 . ".\\(?:::\\|[:=]\\)")
+               (59 . ".\\(?:;;\\|;\\)")
+               (60 . ".\\(?:\\(?:!--\\)\\|\\(?:~~\\|->\\|\\$>\\|\\*>\\|\\+>\\|--\\|<[<=-]\\|=[<=>]\\||>\\)\\|[*$+~/<=>|-]\\)")
+               (61 . ".\\(?:\\(?:/=\\|:=\\|<<\\|=[=>]\\|>>\\)\\|[<=>~]\\)")
+               (62 . ".\\(?:\\(?:=>\\|>[=>-]\\)\\|[=>-]\\)")
+               (63 . ".\\(?:\\(\\?\\?\\)\\|[:=?]\\)")
+               (91 . ".\\(?:]\\)")
+               (92 . ".\\(?:\\(?:\\\\\\\\\\)\\|\\\\\\)")
+               (94 . ".\\(?:=\\)")
+               (119 . ".\\(?:ww\\)")
+               (123 . ".\\(?:-\\)")
+               (124 . ".\\(?:\\(?:|[=|]\\)\\|[=>|]\\)")
+               (126 . ".\\(?:~>\\|~~\\|[>=@~-]\\)")
+               )
+             ))
+  (dolist (char-regexp alist)
+    (set-char-table-range composition-function-table (car char-regexp)
+                          `([,(cdr char-regexp) 0 font-shape-gstring]))))
 
 ;; These functions are useful. Activate them.
 (put 'downcase-region 'disabled nil)
@@ -278,6 +311,7 @@
            (string= lang "java")
            (string= lang "python")
            (string= lang "emacs-lisp")
+           (string= lang "js")
            (string= lang "sqlite"))))
 (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
 
@@ -416,6 +450,7 @@
          ("M-x" . helm-M-x)
          ("C-x C-f" . helm-find-files)
          ("C-c f" . copy-file)
+         ("C-c d" . copy-directory)
          ("C-c n" . rename-file)
          )
   )
@@ -541,11 +576,6 @@
   :ensure t
   :bind ("M-x" . smex))
 
-(use-package skewer-mode
-  :commands skewer-mode
-  :ensure t
-  :config (skewer-setup))
-
 (use-package smooth-scrolling
   :ensure t)
 
@@ -570,13 +600,6 @@
   :config
   (setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
   (yas-global-mode))
-
-(use-package emmet-mode
-  :ensure t
-  :commands emmet-mode
-  :config
-  (add-hook 'html-mode-hook 'emmet-mode)
-  (add-hook 'css-mode-hook 'emmet-mode))
 
 (use-package zoom-frm
   :ensure t
@@ -614,7 +637,7 @@
   :ensure t
   :defer t
   :config
-  (setq venv-location "~/.virtualenvs"))
+  (setq venv-location "~/anaconda3/envs/"))
 
 (use-package xquery-mode
   :ensure t
@@ -635,22 +658,6 @@
   :ensure t
   :bind (("C-c o o" . crux-open-with)
          ("C-c u" . crux-view-url)))
-
-(require 'subr-x) ;; #'string-trim
-(defvar mai/user-settings-dir nil
-  "The directory with user-specific Emacs settings for this
-  user.")
-
-;; Settings for currently logged in user
-(setq mai/user-settings-dir
-      (concat user-emacs-directory
-              "users/"
-              (string-trim (shell-command-to-string "hostname -s"))))
-(add-to-list 'load-path mai/user-settings-dir)
-
-;; Load settings specific for the current user
-(when (file-exists-p mai/user-settings-dir)
-  (mapc 'load (directory-files mai/user-settings-dir nil "^[^#].*el$")))
 
 (defun my-c-mode-hook ()
   (setq c-basic-offset 4)
@@ -679,8 +686,6 @@
 (use-package server
   :config
   (server-start))
-
-
 
 (require 'package)
 (package-initialize)
@@ -876,13 +881,10 @@ May be necessary for some GUI environments (e.g., Mac OS X)")
 (require 'yasnippet)
 (yas-global-mode 1)
 
-(add-hook 'js2-mode-hook 'ac-js2-mode)
-(setq ac-js2-evaluate-calls t)
-
 (ac-config-default)
 (global-auto-complete-mode t)
-(setq ac-auto-show-menu    0.1)
-(setq ac-delay             0.1)
+(setq ac-auto-show-menu    0.2)
+(setq ac-delay             0.2)
 (setq ac-menu-height       20)
 (setq ac-auto-start t)
 (setq ac-show-menu-immediately-on-auto-complete t)
@@ -962,3 +964,217 @@ May be necessary for some GUI environments (e.g., Mac OS X)")
             (org-todo)))))))
 
 (require 'ox-hugo)
+
+(add-hook 'python-mode-hook 'anaconda-mode)
+(add-hook 'python-mode-hook 'anaconda-eldoc-mode)
+(add-hook 'ob-ipython-mode-hook 'anaconda-mode)
+(add-hook 'ob-ipython-mode-hook 'anaconda-eldoc-mode)
+
+(add-to-list 'python-shell-extra-pythonpaths "/home/isaac/anaconda3/bin/python")
+
+(exec-path-from-shell-initialize)
+
+(defun set-exec-path-from-shell-PATH ()
+        (interactive)
+        (let ((path-from-shell (replace-regexp-in-string "^.*\n.*shell\n" "" (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
+        (setenv "PATH" path-from-shell)
+        (setq exec-path (split-string path-from-shell path-separator))))
+
+(set-exec-path-from-shell-PATH)
+
+(defvar yt-iframe-format
+  ;; You may want to change your width and height.
+  (concat "<iframe width=\"440\""
+          " height=\"335\""
+          " src=\"https://www.youtube.com/embed/%s\""
+          " frameborder=\"0\""
+          " allowfullscreen>%s</iframe>"))
+
+(org-add-link-type
+ "yt"
+ (lambda (handle)
+   (browse-url
+    (concat "https://www.youtube.com/embed/"
+            handle)))
+ (lambda (path desc backend)
+   (cl-case backend
+     (html (format yt-iframe-format
+                   path (or desc "")))
+     (latex (format "\href{%s}{%s}"
+                    path (or desc "video"))))))
+
+;; use web-mode for .jsx files
+;; http://www.flycheck.org/manual/latest/index.html
+(require 'flycheck)
+
+(add-to-list 'auto-mode-alist '("\\.jsx$" . rjsx-mode))
+(add-to-list 'auto-mode-alist '("\\.js$" . rjsx-mode))
+;; (add-to-list 'auto-mode-alist '("\\.ejs" . web-mode))
+;; (add-to-list 'auto-mode-alist '("\\.ejs" . emmet-mode))
+
+
+;; turn on flychecking globally
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
+;; disable jshint since we prefer eslint checking
+(setq-default flycheck-disabled-checkers
+  (append flycheck-disabled-checkers
+    '(javascript-jshint)))
+
+;; use eslint with web-mode for jsx files
+(flycheck-add-mode 'javascript-eslint 'web-mode)
+
+;; customize flycheck temp file prefix
+(setq-default flycheck-temp-prefix ".flycheck")
+
+;; disable json-jsonlist checking for json files
+(setq-default flycheck-disabled-checkers
+  (append flycheck-disabled-checkers
+    '(json-jsonlist)))
+
+;; https://github.com/purcell/exec-path-from-shell
+;; only need exec-path-from-shell on OSX
+;; this hopefully sets up path and other vars better
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
+(defadvice js-jsx-indent-line (after js-jsx-indent-line-after-hack activate)
+  "Workaround sgml-mode and follow airbnb component style."
+  (let* ((cur-line (buffer-substring-no-properties
+                    (line-beginning-position)
+                    (line-end-position))))
+    (if (string-match "^\\( +\\)\/?> *$" cur-line)
+      (let* ((empty-spaces (match-string 1 cur-line)))
+        (replace-regexp empty-spaces
+                        (make-string (- (length empty-spaces) sgml-basic-offset) 32)
+                        nil
+                        (line-beginning-position) (line-end-position))))))
+
+(use-package skewer-mode
+  :commands skewer-mode
+  :ensure t
+  :config (skewer-setup))
+
+(add-to-list 'auto-mode-alist '("components\\/.*\\.js\\'" . rjsx-mode))
+(add-hook 'web-mode-hook  'rjsx-mode-hook)
+
+(require 'emmet-mode)
+(use-package emmet-mode
+  :ensure t
+  :commands emmet-mode
+  :config
+  (add-hook 'html-mode-hook 'emmet-mode)
+  (add-hook 'css-mode-hook 'emmet-mode)
+  (add-hook 'rjsx-mode-hook 'emmet-mode)
+  (add-hook 'multi-web-mode-hook 'emmet-mode)
+  (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
+  (add-hook 'web-mode-hook 'emmet-mode)
+  (add-hook 'js2-mode-hook 'emmet-mode)
+)
+
+;; (add-hook 'js2-mode-hook 'ac-js2-mode)
+
+;; for better jsx syntax-highlighting in web-mode
+;; - courtesy of Patrick @halbtuerke
+(defadvice web-mode-highlight-part (around tweak-jsx activate)
+  (if (equal web-mode-content-type "jsx")
+    (let ((web-mode-enable-part-face nil))
+      ad-do-it)
+    ad-do-it))
+
+;; use local eslint from node_modules before global
+;; http://emacs.stackexchange.com/questions/21205/flycheck-with-file-relative-eslint-executable
+(defun my/use-eslint-from-node-modules ()
+  (let* ((root (locate-dominating-file
+                (or (buffer-file-name) default-directory)
+                "node_modules"))
+         (eslint (and root
+                      (expand-file-name "node_modules/eslint/bin/eslint.js"
+                                        root))))
+    (when (and eslint (file-executable-p eslint))
+      (setq-local flycheck-javascript-eslint-executable eslint))))
+(add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
+
+(require 'prettier-js)
+(add-hook 'js2-mode-hook 'prettier-js-mode)
+(add-hook 'web-mode-hook 'prettier-js-mode)
+(add-hook 'rjsx-mode-hook 'prettier-js-mode)
+(add-hook 'js-mode-hook 'prettier-js-mode)
+(add-hook 'multi-web-mode-hook 'prettier-js-mode)
+
+(setq prettier-js-args '(
+  ;; "--trailing-comma" "all"
+  "--bracket-spacing" "false"
+))
+
+(defun enable-minor-mode (my-pair)
+  "Enable minor mode if filename match the regexp.  MY-PAIR is a cons cell (regexp . minor-mode)."
+  (if (buffer-file-name)
+      (if (string-match (car my-pair) buffer-file-name)
+      (funcall (cdr my-pair)))))
+
+(add-hook 'web-mode-hook #'(lambda ()
+                            (enable-minor-mode
+                             '("\\.js?\\'" . prettier-js-mode))))
+
+(add-hook 'html-mode-hook  'html-mode)
+(add-hook 'html-mode-hook 'emmet-mode)
+;; (add-hook 'html-mode-hook 'multi-web-mode)
+
+;; (add-hook 'css-mode-hook  'css-mode)
+(add-hook 'css-mode-hook 'rainbow-mode)
+
+(setq python-indent-guess-indent-offset nil)
+(setq python-indent-offset 4)
+
+;; adjust indents for web-mode to 2 spaces
+(defun my-web-mode-hook ()
+  "Hooks for Web mode. Adjust indents"
+  ;;; http://web-mode.org/
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-js-indent-offset 2)
+  ;; (setq js-mode-indent-level 2)
+  ;; (setq-default js2-basic-offset 2)
+  ;; (setq javascript-indent-level 2)
+  (setq web-mode-code-indent-offset 2))
+(add-hook 'web-mode-hook  'my-web-mode-hook)
+
+;; (global-aggressive-indent-mode 1)
+
+(defun move-text-internal (arg)
+   (cond
+    ((and mark-active transient-mark-mode)
+     (if (> (point) (mark))
+            (exchange-point-and-mark))
+     (let ((column (current-column))
+              (text (delete-and-extract-region (point) (mark))))
+       (forward-line arg)
+       (move-to-column column t)
+       (set-mark (point))
+       (insert text)
+       (exchange-point-and-mark)
+       (setq deactivate-mark nil)))
+    (t
+     (beginning-of-line)
+     (when (or (> arg 0) (not (bobp)))
+       (forward-line)
+       (when (or (< arg 0) (not (eobp)))
+            (transpose-lines arg))
+       (forward-line -1)))))
+
+(defun move-text-down (arg)
+   "Move region (transient-mark-mode active) or current line
+  arg lines down."
+   (interactive "*p")
+   (move-text-internal arg))
+
+(defun move-text-up (arg)
+   "Move region (transient-mark-mode active) or current line
+  arg lines up."
+   (interactive "*p")
+   (move-text-internal (- arg)))
+
+(global-set-key [\M-\S-up] 'move-text-up)
+(global-set-key [\M-\S-down] 'move-text-down)
+
+(setq warning-minimum-level :emergency)
