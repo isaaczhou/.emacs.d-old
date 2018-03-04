@@ -724,7 +724,6 @@ and allows you.
   :bind ("s-<f10>" . whitespace-mode))
 #+end_src
 
-
 * ELPA packages
 
 These are the packages that are not built into Emacs.
@@ -1429,7 +1428,6 @@ Convenience bindings to use doc-view with the arrow keys.
   (server-start))
 #+end_src
 
-
 * Python IDE
 #+begin_src emacs-lisp
 (require 'package)
@@ -1634,7 +1632,6 @@ I want to load snippets in orgmode
 (yas-global-mode 1)
 #+end_src
 
-
 * Autocomplete
 #+begin_src emacs-lisp
 (ac-config-default)
@@ -1730,7 +1727,6 @@ I want to load snippets in orgmode
 #+begin_src emacs-lisp
 (require 'ox-hugo)
 #+end_src
-
 
 * Anaconda Mode
 ** Add anaconda to python
@@ -1941,14 +1937,13 @@ Now I use RJSX, I don't need js2 mode
                              '("\\.js?\\'" . prettier-js-mode))))
  #+end_src
 
-
+ 
 ** HTML Mode
 #+begin_src emacs-lisp
-(add-hook 'html-mode-hook  'html-mode)
-(add-hook 'html-mode-hook 'emmet-mode)
+;; (add-hook 'html-mode-hook  'html-mode)
+;; (add-hook 'html-mode-hook 'emmet-mode)
 ;; (add-hook 'html-mode-hook 'multi-web-mode)
 #+end_src
-
 
  
 ** CSS Mode

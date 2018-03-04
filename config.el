@@ -1116,8 +1116,8 @@ May be necessary for some GUI environments (e.g., Mac OS X)")
                             (enable-minor-mode
                              '("\\.js?\\'" . prettier-js-mode))))
 
-(add-hook 'html-mode-hook  'html-mode)
-(add-hook 'html-mode-hook 'emmet-mode)
+;; (add-hook 'html-mode-hook  'html-mode)
+;; (add-hook 'html-mode-hook 'emmet-mode)
 ;; (add-hook 'html-mode-hook 'multi-web-mode)
 
 ;; (add-hook 'css-mode-hook  'css-mode)
