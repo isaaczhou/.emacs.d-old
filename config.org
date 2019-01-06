@@ -1198,27 +1198,6 @@ idle time.
 #+end_src
 
 
-** Zoom-frm
-
-=zoom-frm= is a nice package that allows you to resize the text of
-entire Emacs frames (this includes text in the buffer, mode line, and
-minibuffer). The =zoom-in/out= command acts similar to the
-=text-scale-adjust= command---you can chain zooming in, out, or
-resetting to the default size once the command has been initially
-called.
-
-Changing the =frame-zoom-font-difference= essentially enables a
-"presentation mode" when calling =toggle-zoom-frame=.
-
-#+begin_src emacs-lisp
-(use-package zoom-frm
-  :ensure t
-  :bind (("C-M-=" . zoom-in/out)
-         ("H-z"   . toggle-zoom-frame)
-         ("s-<f1>" . toggle-zoom-frame))
-  :config
-  (setq frame-zoom-font-difference 10))
-#+end_src
 
 ** Scratch
 

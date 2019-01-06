@@ -1,4 +1,3 @@
-
 (defun iz/visit-emacs-config ()
   (interactive)
   (find-file "~/.emacs.d/config.org"))
@@ -602,14 +601,6 @@
   (setq yas-snippet-dirs (concat user-emacs-directory "snippets"))
   (yas-global-mode))
 
-(use-package zoom-frm
-  :ensure t
-  :bind (("C-M-=" . zoom-in/out)
-         ("H-z"   . toggle-zoom-frame)
-         ("s-<f1>" . toggle-zoom-frame))
-  :config
-  (setq frame-zoom-font-difference 10))
-
 (use-package scratch
   :ensure t
   :commands scratch)
@@ -695,7 +686,7 @@
 
 (defun uninstalled-packages (packages)
   (delq nil
-        (mapcar (lambda (p) (if (package-installed-p p nil) nil p)) packages)))
+	(mapcar (lambda (p) (if (package-installed-p p nil) nil p)) packages)))
 
 ;; This delightful bit adapted from:
 ;; http://batsov.com/articles/2012/02/19/package-management-in-emacs-the-good-the-bad-and-the-ugly/
@@ -705,7 +696,7 @@
     (progn
       (package-refresh-contents)
       (dolist (p need-to-install)
-        (package-install p)))))
+	(package-install p)))))
 
 ;; Global Jedi config vars
 
@@ -768,10 +759,10 @@ May be necessary for some GUI environments (e.g., Mac OS X)")
       "Just uses the vc-find-root function to figure out the project root.
        Won't always work for some directory layouts."
       (let* ((buf-dir (expand-file-name (file-name-directory (buffer-file-name buf))))
-             (project-root (vc-find-root buf-dir repo-file)))
-        (if project-root
-            (expand-file-name project-root)
-          nil)))
+	     (project-root (vc-find-root buf-dir repo-file)))
+	(if project-root
+	    (expand-file-name project-root)
+	  nil)))
 
     ;; Method 2: slightly more robust
     (defun get-project-root-with-file (buf repo-file &optional init-file)
