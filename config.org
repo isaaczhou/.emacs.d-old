@@ -202,7 +202,7 @@ And here's how we tell Emacs to use the font we want to use.
 
 #+begin_src emacs-lisp
   (when (window-system)
-    (set-default-font "Fira Code 18"))
+    (set-default-font "Fira Code 16"))
   (let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
                  (35 . ".\\(?:###\\|##\\|_(\\|[#(?[_{]\\)")
                  (36 . ".\\(?:>\\)")
@@ -234,6 +234,8 @@ And here's how we tell Emacs to use the font we want to use.
                             `([,(cdr char-regexp) 0 font-shape-gstring]))))
 #+end_src
 
+#+RESULTS:
+
 # Display emojis. Source of system-specific fonts is in [[https://github.com/syohex/emacs-ac-emoji][the README for
 # the emacs-ac-emoji package.]]
 
@@ -244,6 +246,32 @@ And here's how we tell Emacs to use the font we want to use.
 #                     ((string-equal system-type "gnu/linux") "Symbola")))))
 #   (set-fontset-font t 'unicode font nil 'prepend))
 # #+END_SRC
+
+* LS Dire
+#+begin_src emacs-lisp
+(defun xah-dired-sort ()
+  "Sort dired dir listing in different ways.
+Prompt for a choice.
+URL `http://ergoemacs.org/emacs/dired_sort.html'
+Version 2015-07-30"
+  (interactive)
+  (let ($sort-by $arg)
+    (setq $sort-by (ido-completing-read "Sort by:" '( "date" "size" "name" "dir")))
+    (cond
+     ((equal $sort-by "name") (setq $arg "-Al --si --time-style long-iso "))
+     ((equal $sort-by "date") (setq $arg "-Al --si --time-style long-iso -t"))
+     ((equal $sort-by "size") (setq $arg "-Al --si --time-style long-iso -S"))
+     ((equal $sort-by "dir") (setq $arg "-Al --si --time-style long-iso --group-directories-first"))
+     (t (error "logic error 09535" )))
+    (dired-sort-other $arg )))
+#+end_src
+
+* LeetCode
+
+#+begin_src emacs-lisp
+(setq leetcode-prefer-language "python3")
+(setq leetcode-prefer-sql "mysql")
+#+end_src
 
 * Sane defaults
 
@@ -636,6 +664,49 @@ I want beautiful bullets, not *
 
 #+begin_src emacs-lisp :tangle no
 (use-package tramp)
+(setq tramp-default-method "ssh")
+#+end_src
+
+** Connect to 188
+
+#+begin_src emacs-lisp
+(defun r188()
+  (interactive)
+  (dired "/isaac.zhou@172.16.200.188:/home/isaac.zhou"))
+#+end_src
+
+** Connect to 190
+
+#+begin_src emacs-lisp
+(defun r190()
+  (interactive)
+  (dired "/isaac.zhou@172.16.200.190:/home/isaac.zhou"))
+#+end_src
+
+
+** Connect to local
+
+#+begin_src emacs-lisp
+(defun lo()
+  (interactive)
+  (dired "~"))
+#+end_src
+
+
+** Connect to HMP2
+
+#+begin_src emacs-lisp
+(defun hm()
+  (interactive)
+  (dired "/isaac.zhou@172.16.200.188:/mnt/cluster_fileserver/Healthy_Microbiome/HMP2"))
+#+end_src
+
+** Connect to Brian Data
+
+#+begin_src emacs-lisp
+(defun bfd()
+  (interactive)
+  (dired "/isaac.zhou@172.16.200.188:/mnt/storage2/databfanelli/BiomeFX/download_20200204/"))
 #+end_src
 
 * Locate
@@ -1721,7 +1792,6 @@ I want to load snippets in orgmode
 (add-to-list 'python-shell-extra-pythonpaths "/home/isaac/anaconda3/bin/python")
 #+end_src
 
-
 ** exec-path-from-shell
 
 #+begin_src emacs-lisp
@@ -1737,6 +1807,7 @@ I want to load snippets in orgmode
 
 (set-exec-path-from-shell-PATH)
 #+end_src
+
 
 * Embed Youtube Videos
 #+begin_src emacs-lisp
@@ -2002,6 +2073,29 @@ Now I use RJSX, I don't need js2 mode
 (global-set-key [\M-\S-up] 'move-text-up)
 (global-set-key [\M-\S-down] 'move-text-down)
 #+end_src
+
+* Ivy Mode
+#+begin_src emacs-lisp
+(use-package ivy
+  :ensure t
+  :diminish (ivy-mode . "")
+  :config
+  (ivy-mode 1)
+  (setq ivy-use-virtual-buffers t)
+  (setq enable-recursive-minibuffers t)
+  (setq ivy-height 10)
+  (setq ivy-initial-inputs-alist nil)
+  (setq ivy-count-format "%d/%d")
+  (setq ivy-builders-alist `((t . ivy--regex-ignore-order)))
+  )
+
+(use-package counsel
+  :ensure t
+  :bind (("M-x" . counsel-M-x)
+         ("\C-x \C-f" . counsel-find-file))
+  )
+#+end_src
+
 
 * turn off warning
 #+begin_src emacs-lisp

@@ -1,0 +1,31 @@
+
+;; ----- smex-history -----
+(
+ lo
+ r188
+ package-list-packages
+ package-install
+ r190
+ bfd
+ hm
+)
+
+;; ----- smex-data -----
+(
+ (list-packages . 2)
+ (python-mode . 1)
+ (org-mode . 1)
+ (linum-mode . 5)
+ (org-blackfriday-export-to-markdown . 6)
+ (shell . 1)
+ (shell-pop . 2)
+ (remote188 . 8)
+ (dired . 5)
+ (lo . 18)
+ (r188 . 27)
+ (hm . 1)
+ (bfd . 3)
+ (r190 . 1)
+ (package-list-packages . 2)
+ (package-install . 1)
+)

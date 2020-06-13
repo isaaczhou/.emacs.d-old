@@ -23,6 +23,7 @@
         markdown-insert-bold
         markdown-outdent-or-delete
         mc/mark-next-line-like-this
+        ns-copy-including-secondary
         org-beginning-of-line
         org-ctrl-c-ctrl-c
         org-cycle
@@ -32,6 +33,7 @@
         org-kill-line
         org-metaright
         org-self-insert-command
+        org-shiftcontrolright
         org-shiftmetaright
         org-yank
         other-frame
@@ -40,13 +42,16 @@
         slime-autodoc-space
         string-rectangle
         transpose-words
+        wdired-finish-edit
         yas-expand
         ))
 
 (setq mc/cmds-to-run-once
       '(
+        dired-toggle-read-only
         dired-unmark-backward
         kill-region
         markdown-exdent-or-delete
+        mouse-set-region
         org-edit-src-save
         ))

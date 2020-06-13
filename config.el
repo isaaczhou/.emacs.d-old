@@ -73,7 +73,7 @@
 (bind-key "<f8>" 'disable-active-themes)
 
 (when (window-system)
-  (set-default-font "Fira Code 18"))
+  (set-default-font "Fira Code 16"))
 (let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
                (35 . ".\\(?:###\\|##\\|_(\\|[#(?[_{]\\)")
                (36 . ".\\(?:>\\)")
@@ -103,6 +103,25 @@
   (dolist (char-regexp alist)
     (set-char-table-range composition-function-table (car char-regexp)
                           `([,(cdr char-regexp) 0 font-shape-gstring]))))
+
+(defun xah-dired-sort ()
+  "Sort dired dir listing in different ways.
+Prompt for a choice.
+URL `http://ergoemacs.org/emacs/dired_sort.html'
+Version 2015-07-30"
+  (interactive)
+  (let ($sort-by $arg)
+    (setq $sort-by (ido-completing-read "Sort by:" '( "date" "size" "name" "dir")))
+    (cond
+     ((equal $sort-by "name") (setq $arg "-Al --si --time-style long-iso "))
+     ((equal $sort-by "date") (setq $arg "-Al --si --time-style long-iso -t"))
+     ((equal $sort-by "size") (setq $arg "-Al --si --time-style long-iso -S"))
+     ((equal $sort-by "dir") (setq $arg "-Al --si --time-style long-iso --group-directories-first"))
+     (t (error "logic error 09535" )))
+    (dired-sort-other $arg )))
+
+(setq leetcode-prefer-language "python3")
+(setq leetcode-prefer-sql "mysql")
 
 ;; These functions are useful. Activate them.
 (put 'downcase-region 'disabled nil)
@@ -340,6 +359,26 @@
 (lambda () (org-bullets-mode t)))
 
 (global-prettify-symbols-mode t)
+
+(defun r188()
+  (interactive)
+  (dired "/isaac.zhou@172.16.200.188:/home/isaac.zhou"))
+
+(defun r190()
+  (interactive)
+  (dired "/isaac.zhou@172.16.200.190:/home/isaac.zhou"))
+
+(defun lo()
+  (interactive)
+  (dired "~"))
+
+(defun hm()
+  (interactive)
+  (dired "/isaac.zhou@172.16.200.188:/mnt/cluster_fileserver/Healthy_Microbiome/HMP2"))
+
+(defun bfd()
+  (interactive)
+  (dired "/isaac.zhou@172.16.200.188:/mnt/storage2/databfanelli/BiomeFX/download_20200204/"))
 
 ;; mdfind is the command line interface to Spotlight
 (setq locate-command "mdfind")
@@ -1168,5 +1207,24 @@ May be necessary for some GUI environments (e.g., Mac OS X)")
 
 (global-set-key [\M-\S-up] 'move-text-up)
 (global-set-key [\M-\S-down] 'move-text-down)
+
+(use-package ivy
+  :ensure t
+  :diminish (ivy-mode . "")
+  :config
+  (ivy-mode 1)
+  (setq ivy-use-virtual-buffers t)
+  (setq enable-recursive-minibuffers t)
+  (setq ivy-height 10)
+  (setq ivy-initial-inputs-alist nil)
+  (setq ivy-count-format "%d/%d")
+  (setq ivy-builders-alist `((t . ivy--regex-ignore-order)))
+  )
+
+(use-package counsel
+  :ensure t
+  :bind (("M-x" . counsel-M-x)
+         ("\C-x \C-f" . counsel-find-file))
+  )
 
 (setq warning-minimum-level :emergency)

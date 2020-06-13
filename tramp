@@ -1,0 +1,46 @@
+;; -*- emacs-lisp -*- <20/06/12 07:50:19 /Users/isaaczhou/.emacs.d/tramp>
+;; Tramp connection history.  Don't change this file.
+;; You can delete it, forcing Tramp to reapply the checks.
+
+((["ssh" "isaac.zhou" "172.16.200.188" nil nil]
+  ("uname" "Linux 3.10.0-1062.4.3.el7.x86_64")
+  ("locale" "LC_ALL=en_US.utf8")
+  ("test" "test")
+  ("remote-path"
+   ("/usr/bin" "/bin" "/sbin" "/usr/sbin" "/usr/local/bin" "/usr/local/sbin"))
+  ("remote-shell" "/bin/sh")
+  ("file-exists" "test -e")
+  ("stat" nil)
+  ("perl-file-spec" t)
+  ("perl-cwd-realpath" t)
+  ("perl" "\\perl")
+  ("id" "/usr/bin/id")
+  ("gid-integer" 3061)
+  ("ls" "/usr/bin/ls --color=never")
+  ("ls-dired" t)
+  ("readlink" "\\readlink")
+  ("gid-string" "isaac.zhou")
+  ("git" "\\git")
+  ("~" "/home/isaac.zhou"))
+ (["scp" "isaac.zhou" "172.16.200.190" nil nil]
+  ("uname" "Linux 3.10.0-1062.4.3.el7.x86_64")
+  ("locale" "LC_ALL=en_US.utf8")
+  ("test" "test")
+  ("remote-path"
+   ("/usr/bin" "/bin" "/sbin" "/usr/sbin" "/usr/local/bin" "/usr/local/sbin"))
+  ("remote-shell" "/bin/sh")
+  ("ls" "/usr/bin/ls --color=never")
+  ("ls-dired" t)
+  ("stat" nil)
+  ("perl-file-spec" t)
+  ("perl-cwd-realpath" t)
+  ("perl" "\\perl")
+  ("id" "/usr/bin/id")
+  ("gid-integer" 3061)
+  ("file-exists" "test -e")
+  ("readlink" "\\readlink")
+  ("git" "\\git")
+  ("gid-string" "isaac.zhou")
+  ("uid-integer" 3061))
+ (["scp" "isaac.zhou" "172.16.200.188" nil nil]
+  nil))
